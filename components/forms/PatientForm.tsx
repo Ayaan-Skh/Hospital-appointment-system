@@ -6,6 +6,10 @@ import { Button } from "@/components/ui/button"
 import {Form} from "@/components/ui/form"
 import { useForm } from "react-hook-form"
 import CustomFormField from "../ui/Custom-Form"
+import SubmitButton from "../ui/SubmitButton"
+import { useState } from "react"
+import { UserFormValidation } from "@/lib/Validation"
+import { useRouter } from "next/navigation"
 export enum FormFieldType {
     INPUT = "input",
     TEXTAREA = "textarea",
@@ -16,24 +20,31 @@ export enum FormFieldType {
     SKELETON = "skeleton",
   }
 
-const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-})
+
 
 export const PatientForm=()=> {
     // 1. Define your form.
-    const form = useForm<z.infer<typeof formSchema>>({
-      resolver: zodResolver(formSchema),
+    const router=useRouter();
+    const [isLoading,setIsLoading]=useState(false)
+    const form = useForm<z.infer<typeof UserFormValidation>>({
+      resolver: zodResolver(UserFormValidation),
       defaultValues: {
         username: "",
+        email:"",
+        phone:""
       },
     })
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log(values)
+    async function onSubmit({username,email,phone}: z.infer<typeof UserFormValidation>) {
+        setIsLoading(true)
+        // try {
+        //   const UserData={username,email,phone}
+        //   const user=await createUser(UserData)
+
+        //   if(user) router.push(`/patienst/${user.$id}/register`)
+        // } catch (error) {
+        //   console.log(error)
+        // }
+        // console.log(values)
       }
 
   return (
@@ -70,7 +81,8 @@ export const PatientForm=()=> {
             iconSrc="/assets/icons/email.svg"
             iconAlt="Number"
        />
-        <Button type="submit" className="bg-cyan-400 hover:bg-cyan-600 hover:text-white hover:scale-110 ease-in-out">Submit</Button>
+        {/* <Button type="submit" className="bg-cyan-400 hover:bg-cyan-600 hover:text-white hover:scale-110 w-96 ease-in-out">Submit</Button> */}
+        <SubmitButton isLoading={isLoading} className="w-96 bg-cyan-400 text-slate-950">Get Started</SubmitButton>
       </form>
     </Form>
   )

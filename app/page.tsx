@@ -27,13 +27,14 @@ export default function Home() {
         <PatientForm />
       </div>
 
-      <div id="right-side" className="w-[50vw]">
+      <div id="right-side" className="w-[50vw] flex items-center">
 
         <Image
-          src="/assets/images/Hospital-background.jpeg"
+          src="/assets/images/back1.png"
           alt="patient"
-          width={800}
-          height={500}
+          width={700}
+          height={800}
+          className=""
           />
       </div>
     </div>
